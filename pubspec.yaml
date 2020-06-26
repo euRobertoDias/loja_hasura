@@ -41,6 +41,13 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+vars:
+  runner: flutter pub run build_runner
+  clean: flutter clean
+  get: flutter pub get
+scripts: 
+    mobx_build: $clean & $get & $runner build --delete-conflicting-outputs
+    mobx_watch: $clean & $get & $runner watch --delete-conflicting-outputs
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

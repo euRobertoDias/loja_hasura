@@ -12,9 +12,6 @@ abstract class _AddProdutoControllerBase with Store {
 
   final AddProdutoRepository addProdutoRepository;
 
-  @observable
-  int value = 0;
-
   _AddProdutoControllerBase(this.addProdutoRepository) {
     addProdutoRepository.getTipoCategoriaProduto().then((data){
       tipoProduto = data;
@@ -22,10 +19,51 @@ abstract class _AddProdutoControllerBase with Store {
   }
 
   @observable
+  String descricao = '';
+
+  @action
+  setDescricao(String _desc) {
+    descricao = _desc;
+  }
+
+  @observable
+  String valor = '';
+
+  @action
+  setValor(String _valor) {
+    valor = _valor;
+  }
+
+  @observable
+  TipoECategoriaProdutoDto selectedCategoria;
+
+  @action
+  setSelectedCategoria(TipoECategoriaProdutoDto _selectedCategoria) {
+    selectedCategoria = _selectedCategoria;
+  }
+
+  @observable
+  TipoECategoriaProdutoDto selectedTipo;
+
+  @action
+  setSelectedTipo(TipoECategoriaProdutoDto _selectedTipo) {
+    selectedTipo = _selectedTipo;
+  }
+
+  @observable
   TipoCategoriaProdutoDto tipoProduto;
 
   @action
-  void increment() {
-    value++;
-  }
+  Future<bool> salvar() async {
+    if(descricao != null &&
+      valor != null &&
+      selectedTipo?.id != null &&
+      selectedCategoria?.id != null) {
+      return await addProdutoRepository.addProduto(
+        descricao, valor, selectedTipo.id, selectedCategoria.id
+      );
+    }
+    return false;
+  } 
+
 }
